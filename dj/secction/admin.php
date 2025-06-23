@@ -1,9 +1,6 @@
-<?php
-$conn = new mysqli("host", "user", "pass", "database");
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+<?php include 'db.php'; ?>
 
+<?php
 $imageUploaded = "";
 
 // Save or Update
@@ -12,7 +9,7 @@ if (isset($_POST['save'])) {
     $key = $_POST['key_name'];
     $info = $_POST['info'];
 
-    // Handle image upload
+    // Image upload
     $imageName = "";
     if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
         $upload_dir = "uploads/";
@@ -27,14 +24,13 @@ if (isset($_POST['save'])) {
         }
     }
 
-    // Check if exists
+    // Check if content exists
     $stmt = $conn->prepare("SELECT id FROM site_content WHERE section=? AND key_name=?");
     $stmt->bind_param("ss", $section, $key);
     $stmt->execute();
     $stmt->store_result();
 
     if ($stmt->num_rows > 0) {
-        // Update
         if ($imageName != "") {
             $stmt = $conn->prepare("UPDATE site_content SET info=?, image=? WHERE section=? AND key_name=?");
             $stmt->bind_param("ssss", $info, $imageName, $section, $key);
@@ -43,7 +39,6 @@ if (isset($_POST['save'])) {
             $stmt->bind_param("sss", $info, $section, $key);
         }
     } else {
-        // Insert
         $stmt = $conn->prepare("INSERT INTO site_content (section, key_name, image, info) VALUES (?, ?, ?, ?)");
         $stmt->bind_param("ssss", $section, $key, $imageName, $info);
     }

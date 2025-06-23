@@ -1,8 +1,5 @@
 <?php
-$conn = new mysqli("host", "user", "pass", "database");
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'db.php'; // Include connection
 
 function getSectionContent($conn, $section) {
     $data = [];
@@ -25,7 +22,7 @@ $home = getSectionContent($conn, "home");
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?= $home['hero']['info'] ?? 'Welcome to Travel Site' ?></title>
+    <title><?= htmlspecialchars($home['hero']['info'] ?? 'Welcome to Travel Site') ?></title>
     <style>
         body { font-family: Arial, sans-serif; padding: 20px; }
         img { max-width: 100%; height: auto; }
@@ -40,7 +37,7 @@ $home = getSectionContent($conn, "home");
     <a href="admin.php">Admin Panel</a>
 </nav>
 
-<h1><?= $home['hero']['info'] ?? '' ?></h1>
+<h1><?= htmlspecialchars($home['hero']['info'] ?? '') ?></h1>
 
 <?php
 $heroImage = $home['hero']['image'] ?? '';
@@ -53,13 +50,13 @@ if (!empty($heroImage) && file_exists($imgPath)) {
 ?>
 
 <h2>Welcome</h2>
-<p><?= $home['welcome']['info'] ?? '' ?></p>
+<p><?= htmlspecialchars($home['welcome']['info'] ?? '') ?></p>
 
 <h2>Featured Services</h2>
-<p><?= $home['features']['info'] ?? '' ?></p>
+<p><?= htmlspecialchars($home['features']['info'] ?? '') ?></p>
 
 <h2>Call to Action</h2>
-<p><?= $home['cta']['info'] ?? '' ?></p>
+<p><?= htmlspecialchars($home['cta']['info'] ?? '') ?></p>
 
 </body>
 </html>

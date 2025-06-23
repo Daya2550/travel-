@@ -1,8 +1,5 @@
 <?php
-$conn = new mysqli("host", "user", "pass", "database");
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include 'db.php'; // Or directly use your existing connection block
 
 function getSectionContent($conn, $section) {
     $data = [];
@@ -23,33 +20,49 @@ $about = getSectionContent($conn, "about");
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>About Us | Travel Site</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; }
+        img { max-width: 100%; height: auto; margin-top: 10px; }
+        nav ul { list-style: none; padding: 0; display: flex; gap: 15px; }
+        nav li { display: inline; }
+        nav a { text-decoration: none; font-weight: bold; color: #333; }
+        nav a:hover { text-decoration: underline; }
+        h1, h3 { color: #1a73e8; }
+    </style>
 </head>
 <body>
-    <h1>About Our Company</h1>
 
-    <h3>Company Bio</h3>
-    <p><?= $about['company_bio']['info'] ?? '' ?></p>
-    <?php if (!empty($about['company_bio']['image'])): ?>
-        <img src="uploads/<?= $about['company_bio']['image'] ?>" width="400">
-    <?php endif; ?>
-
-    <h3>Our Journey</h3>
-    <p><?= $about['timeline']['info'] ?? '' ?></p>
-    <?php if (!empty($about['timeline']['image'])): ?>
-        <img src="uploads/<?= $about['timeline']['image'] ?>" width="400">
-    <?php endif; ?>
-
-    <h3>Awards</h3>
-    <p><?= $about['awards']['info'] ?? '' ?></p>
-    <?php if (!empty($about['awards']['image'])): ?>
-        <img src="uploads/<?= $about['awards']['image'] ?>" width="400">
-    <?php endif; ?>
-
-      <li><a href="index.php">Home</a></li>
+<nav>
+    <ul>
+        <li><a href="index.php">Home</a></li>
         <li><a href="about.php">About Us</a></li>
-        <li><a href="admin.php">Services</a></li>
+        <li><a href="admin.php">Admin Panel</a></li>
+    </ul>
+</nav>
+
+<h1>About Our Company</h1>
+
+<h3>Company Bio</h3>
+<p><?= htmlspecialchars($about['company_bio']['info'] ?? '') ?></p>
+<?php if (!empty($about['company_bio']['image']) && file_exists('uploads/' . $about['company_bio']['image'])): ?>
+    <img src="uploads/<?= htmlspecialchars($about['company_bio']['image']) ?>" alt="Company Bio">
+<?php endif; ?>
+
+<h3>Our Journey</h3>
+<p><?= htmlspecialchars($about['timeline']['info'] ?? '') ?></p>
+<?php if (!empty($about['timeline']['image']) && file_exists('uploads/' . $about['timeline']['image'])): ?>
+    <img src="uploads/<?= htmlspecialchars($about['timeline']['image']) ?>" alt="Timeline">
+<?php endif; ?>
+
+<h3>Awards</h3>
+<p><?= htmlspecialchars($about['awards']['info'] ?? '') ?></p>
+<?php if (!empty($about['awards']['image']) && file_exists('uploads/' . $about['awards']['image'])): ?>
+    <img src="uploads/<?= htmlspecialchars($about['awards']['image']) ?>" alt="Awards">
+<?php endif; ?>
+
 </body>
 </html>
