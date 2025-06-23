@@ -1,0 +1,61 @@
+CREATE DATABASE IF NOT EXISTS tours_travels;
+USE tours_travels;
+
+
+
+CREATE TABLE IF NOT EXISTS reviews (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    phone VARCHAR(20),
+    trip_id VARCHAR(50),
+    destination VARCHAR(100),
+    trip_date DATE,
+    rating INT,
+    info TEXT NOT NULL,
+    image VARCHAR(255),
+    date DATE
+);
+
+
+CREATE TABLE IF NOT EXISTS site_content (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    section VARCHAR(100),
+    key_name VARCHAR(100),
+    image VARCHAR(255),
+    info TEXT
+);
+
+
+CREATE TABLE bookings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    booking_type ENUM('package', 'custom'),
+    package_id INT DEFAULT NULL,
+    vehicle_type VARCHAR(50),
+    pickup_location VARCHAR(255) DEFAULT NULL,
+    drop_location VARCHAR(255) DEFAULT NULL,
+    additional_notes TEXT,
+    booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+CREATE TABLE tour_packages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    trip_name VARCHAR(255) NOT NULL,
+    distance VARCHAR(100) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    description TEXT,
+    image VARCHAR(255)
+);
+
+
+
+CREATE TABLE vehicles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category ENUM('SUV', 'Sedan', 'Bike', 'Van') NOT NULL,
+    image VARCHAR(255) NOT NULL
+);
